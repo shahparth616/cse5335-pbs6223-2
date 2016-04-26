@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+</script>
+
+
+
+
+
+
+<style>
+h1 {
+    border-bottom: 4px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+    
+}
+table, th , td  {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
+table tr:nth-child(odd)	{
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+</head>
+
+
+
+
+
+<body>
+<div>
+<center><button id="show">Show</button></center>
+</div>
+<div><h1>Cities and Polulation</h1></div>
+<div style="float:center">
+<table id="mytable" style="width: 800px">
+
+    <tr>
+        <th>No</th>
+        <th>Name</th>
+        <th>Country Code</th>
+        <th>District</th>
+        <th>Population</th>
+    </tr>
+
+</table>
+
+</div>
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+$("#mytable").hide();
+$("h1").hide();
+
+
+$("#show").click(function()
+{
+$("#show").hide(1000);
+$("#mytable").show(1000);
+$("h1").show(1000);
+var i = 1;
+var x = setInterval(function() {
+	if(i == 110)
+		{
+			clearInterval(x);
+		}
+
+$.ajax({
+    url: "/data",
+    type: "GET",
+    data: {ID : i},
+	dataType: "json",
+
+    success: function(arr)
+    {   	
+    	
+	    	var out = $("<tr />");	
+	   		 $("#mytable").append(out); 
+		     out.append($("<td>" + arr[0].ID + "</td>"));
+		  	 out.append($("<td>" + arr[0].Name + "</td>"));
+			 out.append($("<td>" + arr[0].CountryCode + "</td>"));
+ 			 out.append($("<td>" + arr[0].District + "</td>"));
+ 			  out.append($("<td>" + arr[0].Population + "</td>"));		   	 
+	    
+	    		$("#mytable tr:last").hide();
+				$("#mytable tr:last").show('slow');
+
+				if(i > 21)
+				{
+
+	    		$("#mytable tr:nth-child(2)").remove();
+				
+				}
+
+}
+});
+
+i = i + 1;
+
+}, 500);
+});
+});
+
+
+</script>
+
+</body>
+</html>
+
+
+
